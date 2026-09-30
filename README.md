@@ -8,7 +8,7 @@ The goal of this lab is to demonstrate how to streamline manual processes, reduc
 
 | Project Name | Description | Tech Stack | Status |
 | :--- | :--- | :--- | :--- |
-| [🚀 Telegram to Social Poster](./telegram-to-social-poster) | Automates cross-posting from Telegram to Facebook & Threads with Google Sheets logging. | n8n, Telegram API, Meta API, Google Sheets | ✅ Completed |
+| [🚀 Telegram to Social Poster](./telegram-to-social-poster) | Automates cross-posting from Telegram to Facebook & Threads with Google Sheets logging. | n8n, Telegram API, Meta API, Groq API, Google Sheets | ✅ Completed |
 | [⏳ Coming Soon](#) | Auto Scraping E-Commerce | - | 🚧 WIP |
 
 ---
