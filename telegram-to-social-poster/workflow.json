@@ -1,1 +1,979 @@
 
+{
+  "name": "Auto-Affiliate FB & Threads",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEETS_ID",
+          "mode": "list",
+          "cachedResultName": "Affiliate",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEETS_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status_fb",
+              "lookupValue": "Belum"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "470b4d82-bac1-417f-8590-ed6530ffa604",
+      "name": "Ambil Data GSheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        896,
+        -448
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "<YOUR_GROQ_API_KEY_HERE>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Lu adalah content strategist sekaligus admin Facebook Fanpage 'Diskon Emak-emak'. Misi utama lu bukan sekadar jualan, tapi membuat posting yang terasa seperti rekomendasi dari manusia dan punya potensi mendapatkan perhatian, komentar, share, dan klik secara organik. Gaya bahasa: Indonesia casual, natural, emak-emak + Gen Z, spontan, heboh secukupnya, relatable, kadang lucu, kadang bikin penasaran. Jangan terdengar seperti copywriting AI atau iklan formal. JANGAN menggunakan hashtag, markdown, bullet point, judul formal, atau tulisan backtick. Langsung keluarkan caption final.\\n\\nPRINSIP UTAMA:\\n1. Jangan selalu menjual secara agresif. Buat pembaca merasa menemukan barang menarik.\\n2. Setiap posting harus mempunyai ANGLE yang berbeda.\\n3. Jangan menggunakan hook yang sama atau pola kalimat yang terasa template.\\n4. Jangan selalu menggunakan kata 'buruan', 'wajib punya', 'racun', 'promo kilat', 'murah banget', 'jangan sampai kehabisan'. Kata-kata tersebut hanya boleh digunakan sesekali dan jika memang masuk akal.\\n5. Jangan mengarang manfaat, spesifikasi, kualitas, rating, jumlah pembeli, stok, atau klaim apa pun yang tidak diberikan.\\n6. Jangan menyebut produk sebagai 'viral', 'terlaris', 'nomor 1', 'termurah', atau 'best seller' kecuali informasi tersebut memang diberikan.\\n7. Jangan membuat urgency palsu seperti 'stok tinggal sedikit' atau 'harga akan naik' jika tidak ada datanya.\\n8. Jangan menggunakan engagement bait murahan seperti 'like kalau setuju', 'komen AMIN', 'tag teman', atau 'share ke semua orang'.\\n9. Emoji boleh digunakan secara natural, sekitar 1-5 emoji. Jangan memenuhi setiap baris dengan emoji.\\n10. Caption ideal sekitar 45-100 kata. Jangan terlalu panjang.\\n11. Gunakan paragraf pendek agar nyaman dibaca di Facebook.\\n12. CTA harus natural dan bervariasi. Jangan selalu menggunakan kalimat 'klik link di bawah sekarang'.\\n\\nPILIH ANGLE SECARA DINAMIS. Pertimbangkan nama barang dan harga sebelum menentukan angle. Contoh angle yang dapat digunakan:\\n- 'Eh ternyata ada barang begini'\\n- problem sehari-hari → solusi\\n- barang kecil tapi kepake\\n- relatable emak-emak\\n- curiosity\\n- penemuan menarik\\n- impulse buying yang masuk akal\\n- budget-friendly\\n- cocok untuk rumah\\n- cocok untuk dapur\\n- cocok untuk anak\\n- cocok untuk kerja\\n- cocok untuk hadiah\\n- before/after imagination\\n- 'kenapa baru tahu sekarang'\\n- perbandingan value berdasarkan harga yang tersedia\\n- barang yang kelihatannya sepele tapi berguna\\n- humor ringan\\n- pertanyaan yang bikin orang mikir\\n- rekomendasi santai\\n- 'kalau lagi cari barang seperti ini...'\\n- seasonal/contextual jika relevan\\n\\nJANGAN MEMAKAI ANGLE YANG TERASA SAMA DENGAN POSTING SEBELUMNYA.\\n\\nVARIASIKAN STRUKTUR POSTING. Jangan selalu Hook → Produk → Harga → Link. Sesekali gunakan:\\n- Pertanyaan → observasi → produk → link\\n- Cerita pendek → produk → harga → link\\n- Pernyataan mengejutkan → alasan → link\\n- Masalah → solusi → harga → link\\n- Komentar spontan → produk → CTA\\n- Curiosity → reveal produk → CTA\\n- Harga → alasan menarik → CTA\\n\\nVARIASIKAN CTA. Contoh:\\n'Kalau penasaran, cek barangnya di sini 👇'\\n'Yang lagi nyari beginian bisa intip di sini 👇'\\n'Gua taruh barangnya di sini kalau mau lihat detailnya 👇'\\n'Kalau ternyata kepake buat di rumah, cek aja di sini 👇'\\n'Penasaran harganya segini? Cek langsung 👇'\\n'Kalau cocok, link barangnya ada di sini 👇'\\n\\nJangan selalu menggunakan contoh CTA di atas secara persis. Buat variasi sendiri.\\n\\nATURAN HARGA:\\n- Gunakan harga hanya jika tersedia.\\n- Jangan mengubah angka harga.\\n- Jangan membuat harga coret atau persentase diskon jika tidak diberikan.\\n- Jika harga terlihat menarik, boleh menjadikannya bagian dari hook.\\n\\nATURAN LINK:\\n- Link affiliate wajib diletakkan di bagian paling bawah.\\n- Jangan mengubah karakter link.\\n- Jangan menambahkan link lain.\\n\\nTUJUAN AKHIR:\\nBuat pembaca berhenti scrolling selama beberapa detik karena hook terasa menarik, kemudian memahami kenapa barang tersebut relevan, lalu secara natural tertarik membuka link.\\n\\nYang paling penting: jangan terdengar seperti robot affiliate. Tulis seperti admin fanpage yang benar-benar menemukan barang menarik dan ingin membagikannya ke followers.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Bikin 1 postingan Facebook berdasarkan produk berikut.\\n\\nNama barang: {{$json.Nama_Barang}}\\nHarga: {{$json.Harga}}\\nLink affiliate: {{$json.Link_Affiliate}}\\n\\nBuat angle yang paling relevan dengan produknya. Jangan mengarang informasi yang tidak tersedia.\\n\\nPastikan posting ini berbeda secara gaya dari posting affiliate biasa. Hook harus menarik perhatian tanpa clickbait palsu. Gunakan bahasa Indonesia yang natural dan conversational.\\n\\nAkhiri dengan CTA yang natural lalu letakkan link affiliate ini di baris paling bawah:\\n{{$json.Link_Affiliate}}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "f7c021d4-25ff-44e8-a3fe-e4855bb13bc1",
+      "name": "Bikin Caption FB (Groq)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        208,
+        -224
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "lfHfITsiw0lRfcZA",
+          "name": "Bearer Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v19.0/YOUR_META_APP_ID/feed",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "YOUR_META_TOKEN_ACCSESS"},
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.choices[0].message.content }}"
+            },
+            {
+              "name": "link",
+              "value": "={{ $('Ambil Data GSheet').item.json.Link_Affiliate }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1086cdb7-b9c6-4d6f-8d99-c38bfd277f67",
+      "name": "Posting ke Fanpage FB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        432,
+        -224
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLESHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1154787160,
+          "mode": "list",
+          "cachedResultName": "fb_logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLESHEETS_ID/edit#gid=1154787160"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Waktu_Post": "={{ $now.setZone('Asia/Jakarta').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+            "Nama_Barang": "={{ $('pick one').item.json.Nama_Barang }}",
+            "Link_Affiliate": "={{ $('pick one').item.json.Link_Affiliate }}",
+            "ID_Post_FB": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nama_Barang",
+              "displayName": "Nama_Barang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link_Affiliate",
+              "displayName": "Link_Affiliate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID_Post_FB",
+              "displayName": "ID_Post_FB",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Waktu_Post",
+              "displayName": "Waktu_Post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ed100808-4e42-4358-8c1a-80eeda288b59",
+      "name": "Catat ke fb_logs",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        656,
+        -224
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLESHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLESHEETS_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nama_Barang": "={{ $('pick one').item.json.Nama_Barang }}",
+            "status_fb": "Berhasil",
+            "time_post_fb": "={{ $now.setZone('Asia/Jakarta').toFormat('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "Nama_Barang"
+          ],
+          "schema": [
+            {
+              "id": "Nama_Barang",
+              "displayName": "Nama_Barang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Harga",
+              "displayName": "Harga",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link_Affiliate",
+              "displayName": "Link_Affiliate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_threads",
+              "displayName": "status_threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time_post_threads",
+              "displayName": "time_post_threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status_fb",
+              "displayName": "status_fb",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time_post_fb",
+              "displayName": "time_post_fb",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "f25ac612-6f69-4180-834d-4aad7dc2382c",
+      "name": "Update Data Utama",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        912,
+        -224
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// 1. Cek: Kalau data kosong/nggak ada barang sama sekali\nif (items.length === 0) {\n    return []; \n}\n\n// 2. Pick 1 Random: Ambil index acak dari 0 sampai (jumlah item - 1)\nconst randomIndex = Math.floor(Math.random() * items.length);\nconst selectedItem = items[randomIndex];\n\n// 3. Return\nreturn [selectedItem];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        -224
+      ],
+      "id": "2b3f5ed2-1875-4ba1-91bf-287a8945575a",
+      "name": "pick one"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "ed939827-eb98-4eed-b051-e4411f89c027",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -448
+      ],
+      "webhookId": "7c90115e-78ef-44f7-a7e9-57d7a17a096a",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZAtEetuWhBjrn5ry",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "<YOUR_GROQ_API_KEY_HERE>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Lu adalah sistem parser data. Tugas lu HANYA mengembalikan objek JSON yang valid. DILARANG KERAS memberikan teks lain, backtick, atau penjelasan.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Baca dan ekstrak teks Shopee ini:\\n'{{ $json.message.caption || $json.message.text }}'\\n\\nWAJIB buat JSON murni dengan format di bawah ini. GANTI teks di dalam kurung siku [...] dengan hasil ekstraksi:\\n{\\n  \\\"Nama_Barang\\\": \\\"[Isi dengan nama produk utama saja dari teks]\\\",\\n  \\\"Harga\\\": \\\"[Ekstrak angka harganya saja tanpa titik dan tanpa Rp, contoh 35999. Jika tidak ada angka tulis: Cek link untuk harga]\\\",\\n  \\\"Link_Affiliate\\\": \\\"[Isi HANYA dengan URL pendek s.shopee.co.id dari teks, hilangkan parameter ?share_channel_code= jika ada]\\\",\\n  \\\"status_threads\\\": \\\"Belum\\\",\\n  \\\"time_post_threads\\\": \\\"\\\",\\n  \\\"status_fb\\\": \\\"Belum\\\",\\n  \\\"time_post_fb\\\": \\\"\\\"\\n}\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "971cc685-bcf1-4b50-ba0b-0bd1f956aeb8",
+      "name": "Groq AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        208,
+        -448
+      ],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "lfHfITsiw0lRfcZA",
+          "name": "Bearer Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ambil output teks dari AI (struktur response Groq/OpenAI)\nconst aiText = $input.first().json.choices[0].message.content;\n\n// Bersihkan markdown atau backtick yang sering nyelip dari AI\nconst cleanText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();\n\n// Ubah string JSON jadi Object n8n\nconst parsedData = JSON.parse(cleanText);\n\n// Kembalikan sebagai item n8n\nreturn [\n    {\n        json: parsedData\n    }\n];"
+      },
+      "id": "52a891f9-851f-4788-a24e-5fa0c4ba7d4c",
+      "name": "Code Parser",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        -448
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLESHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLESHEETS_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nama_Barang",
+              "displayName": "Nama_Barang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Harga",
+              "displayName": "Harga",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link_Affiliate",
+              "displayName": "Link_Affiliate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "time_post",
+              "displayName": "time_post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "d3c67566-ff5c-4d72-9769-87d0099de8bf",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        656,
+        -448
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Facbook Auto Posting",
+        "height": 240,
+        "width": 150,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -416
+      ],
+      "id": "fa032c81-873e-42aa-9abf-7bddd26cf417",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// 1. Filter: Cari produk yang kolom Status-nya kosong ATAU berisi kata \"Belum\"\nconst unpostedItems = items.filter(item => {\n    const status = item.json.status_threads;\n    \n    // Kalau kolomnya benar-benar kosong (undefined/null) dari GSheet\n    if (!status) return true; \n    \n    // Ubah jadi string biar aman di-trim, cek apakah kosong atau berisi \"belum\"\n    const statusText = String(status).trim().toLowerCase();\n    return statusText === \"\" || statusText === \"belum\";\n});\n\n// 2. Cek: Kalau semua barang udah laku/terposting\nif (unpostedItems.length === 0) {\n    return []; \n}\n\n// 3. Pick 1: Ambil produk urutan pertama \nconst selectedItem = unpostedItems[0];\n\n// 4. Return\nreturn [selectedItem];"
+      },
+      "name": "Pick Random Row",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        208,
+        16
+      ],
+      "id": "15c94155-7bbb-4883-9ddd-890d5b331f43",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-120b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Lu adalah affiliate marketer tongkrongan yang humble dan lagi gigih cari cuan. Gaya bahasa lu kasual (bang, ngab, hu, kakak). Lu jago ngambil hati orang biar mau bantu klik atau beli tanpa kelihatan memelas berlebihan.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Bikin 1 kalimat reply (maks 200 karakter) buat numpang promosi di kolom komentar orang.\\n\\nATURAN MUTLAK:\\n1. OPENING ACAK & SOPAN: Mulai dengan izin buka lapak yang natural (Contoh: 'Punten bang izin nyari rezeki', 'Misi orang baik numpang lapaknya'). Jangan pakai kata 'warga' terus.\\n2. PROMOSI HALUS (TANPA HARGA): Promosikan '{{ $json.Nama_Barang }}'. DILARANG KERAS menyebutkan harga/angka. Gunakan kata ganti pemancing rasa penasaran seperti 'lagi diskon', 'murah banget', atau 'ramah di kantong'.\\n3. NGEMIS TIPIS: Selipin nada minta tolong diklik/dibeli buat 'pecah telor' atau kejar target. Bikin orang iba tapi asik, sekalian ajak mutualan/support sesama affiliate.\\n4. CALL TO ACTION (WAJIB): Arahin buat klik dan kalimat HARUS DITUTUP persis dengan: '{{ $json.Link_Affiliate }}'\\n5. EKSEKUSI: JANGAN kaku, JANGAN ada hashtag, JANGAN lebih dari 200 karakter. Langsung berikan hasilnya saja tanpa pengantar.\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "name": "Groq Copywriter1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        432,
+        16
+      ],
+      "id": "b88c939b-591b-406c-b4cf-9b168af5ec01",
+      "typeVersion": 4.5,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "lfHfITsiw0lRfcZA",
+          "name": "Bearer Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.threads.net/v1.0/YOUR_META_APP_ID/threads?access_token=YOUR_META_TOKEN_THREADS_ACCSESS",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "media_type",
+              "value": "TEXT"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.choices[0].message.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Threads Create Container1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        656,
+        16
+      ],
+      "id": "a0f04fef-2175-4403-9e34-47d903b6610a",
+      "typeVersion": 4.5
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.threads.net/v1.0/me/threads_publish?access_token=YOUR_META_TOKEN_THREADS_ACCSESS",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "YOUR_META_TOKEN_THREADS_ACCSESS}
+          ]
+        },
+        "options": {}
+      },
+      "name": "Threads Publish1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        912,
+        16
+      ],
+      "id": "e71d5105-5857-46e9-a083-632c98e1c669",
+      "typeVersion": 4.5
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLESHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLESHEETS_ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nama_Barang": "={{ $('Pick Random Row').item.json.Nama_Barang }}",
+            "time_post_fb": "={{ $('Update Data Utama').item.json.time_post_fb }}",
+            "time_post_threads": "={{ $now.setZone('Asia/Jakarta').toFormat('yyyy-MM-dd HH:mm:ss') }}",
+            "status_threads": "Berhasil",
+            "status_fb": "={{ $('Update Data Utama').item.json.status_fb }}"
+          },
+          "matchingColumns": [
+            "Nama_Barang"
+          ],
+          "schema": [
+            {
+              "id": "Nama_Barang",
+              "displayName": "Nama_Barang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Harga",
+              "displayName": "Harga",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link_Affiliate",
+              "displayName": "Link_Affiliate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_threads",
+              "displayName": "status_threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "time_post_threads",
+              "displayName": "time_post_threads",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status_fb",
+              "displayName": "status_fb",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "time_post_fb",
+              "displayName": "time_post_fb",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -16,
+        272
+      ],
+      "id": "20bd60f8-0976-499b-8b94-7c5a15b8cb2d",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLESHEETS_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLESHEETS_ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "status_threads",
+              "lookupValue": "Belum"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Google Sheets2",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        -16,
+        16
+      ],
+      "id": "55e87056-957b-480f-b65c-d83e7371f7c8",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleApi": {
+          "id": "HazyjFeEhXTYYlQK",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Threads Auto Posting",
+        "height": 240,
+        "width": 150,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "0a374283-5c49-46cf-b6d1-3ca6be2663ee",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Ambil Data GSheet": {
+      "main": [
+        [
+          {
+            "node": "pick one",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bikin Caption FB (Groq)": {
+      "main": [
+        [
+          {
+            "node": "Posting ke Fanpage FB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Posting ke Fanpage FB": {
+      "main": [
+        [
+          {
+            "node": "Catat ke fb_logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Catat ke fb_logs": {
+      "main": [
+        [
+          {
+            "node": "Update Data Utama",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pick one": {
+      "main": [
+        [
+          {
+            "node": "Bikin Caption FB (Groq)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Groq AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq AI": {
+      "main": [
+        [
+          {
+            "node": "Code Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code Parser": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Ambil Data GSheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Random Row": {
+      "main": [
+        [
+          {
+            "node": "Groq Copywriter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Copywriter1": {
+      "main": [
+        [
+          {
+            "node": "Threads Create Container1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads Create Container1": {
+      "main": [
+        [
+          {
+            "node": "Threads Publish1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads Publish1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets2": {
+      "main": [
+        [
+          {
+            "node": "Pick Random Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Data Utama": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "01a7f2a5-fe46-4db2-9fd1-e8c4abf1e2fb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "539b0875ddb6585384b21a9aa198ee32f4b02f31bea99e98449fa0b4e84b739d"
+  },
+  "nodeGroups": [],
+  "id": "FitrO8vSWklfqNh6",
+  "tags": []
+}
