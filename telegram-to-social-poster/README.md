@@ -12,11 +12,10 @@ Managing multiple social media accounts manually is time-consuming. This automat
 ## ✨ Features
 - **Instant Cross-Posting:** Send a message in Telegram, and it goes live everywhere.
 - **Centralized Logging:** Keeps a clean record in Google Sheets (Date, Platform, Message snippet, Status).
-- **Error Handling:** (Opsional: tulis kalau lu tambahin node buat nanganin error, misal ngirim pesan error balik ke Telegram).
 
 ## 📸 Workflow Preview
-*(TIPS BUAT LU: Taruh screenshot alur/node n8n lu di sini biar mereka kebayang bentuknya)*
-![Workflow Preview](./assets/workflow-screenshot.png)
+
+![Workflow Preview](./assets/workflow-screenshots.jpg)
 
 ## 🚀 How to Use / Import
 Want to use this workflow? 
@@ -27,4 +26,4 @@ Want to use this workflow?
 5. Activate the workflow!
 
 ---
-**Author:** [Nama Lu] - Connect with me on [LinkedIn](Link LinkedIn Lu)
+**Author:** Andre Nurdiansyah - Connect with me on [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/andre-nurdiansyah)
