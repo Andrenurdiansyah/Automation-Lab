@@ -15,7 +15,7 @@ Managing multiple social media accounts manually is time-consuming. This automat
 
 ## 📸 Workflow Preview
 
-![Workflow Preview](./assets/workflow-screenshots.jpg)
+![Workflow Preview](./assets/file_00000000258c8230b8a2efe5562762fe.png).
 
 ## 🚀 How to Use / Import
 Want to use this workflow? 
